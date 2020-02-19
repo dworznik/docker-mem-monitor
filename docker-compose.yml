@@ -1,0 +1,10 @@
+version: '2'
+services:
+  docker_monitor:
+    env_file: ".env.${ENV}"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python -m docker_monitor
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
