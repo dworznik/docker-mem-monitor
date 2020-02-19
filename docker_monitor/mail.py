@@ -2,7 +2,8 @@ import boto3
 import logging
 import sys
 from botocore.exceptions import ClientError
-from .config import ALERT_SENDER, ALERT_RECIPIENT, SES_CONFIGURATION_SET, AWS_REGION
+from .config import ALERT_SENDER, ALERT_RECIPIENT, ALERT_BODY, ALERT_SUBJECT, SES_CONFIGURATION_SET, AWS_REGION
+from string import Template
 
 logger = logging.getLogger('mailer')
 ch = logging.StreamHandler(sys.stdout)
@@ -12,8 +13,8 @@ ch.setFormatter(formatter)
 logger.addHandler(ch)
 logger.setLevel(logging.INFO)
 
-SUBJECT = "Docker container %s memory utilization has reached %d%%"
-BODY_TEXT = "Container %s is currently using %d%% of the available memory. Restart ASAP."
+SUBJECT_TMPL = Template(ALERT_SUBJECT)
+BODY_TMPL = Template(ALERT_BODY)
 
 CHARSET = "UTF-8"
 
@@ -22,16 +23,16 @@ client = boto3.client('ses', region_name=AWS_REGION)
 
 
 def fake_send(name, mem_usage, mem_util):
-    subject = SUBJECT % (name, mem_util)
-    body = BODY_TEXT % (mem_util, name)
+    subject = SUBJECT_TMPL.substitute(container=name, mem_util=mem_util, mem_usage=mem_usage)
+    body = BODY_TMPL.substitute(container=name, mem_util=mem_util, mem_usage=mem_usage)
     logger.info(subject)
     logger.info(body)
 
 
 def send_alert(name, mem_usage, mem_util):
     logger.info("Sending alert...")
-    subject = SUBJECT % (name, mem_util)
-    body = BODY_TEXT % (name, mem_util)
+    subject = SUBJECT_TMPL.substitute(container=name, mem_util=mem_util, mem_usage=mem_usage)
+    body = BODY_TMPL.substitute(container=name, mem_util=mem_util, mem_usage=mem_usage)
     try:
         # Provide the contents of the email.
         response = client.send_email(
