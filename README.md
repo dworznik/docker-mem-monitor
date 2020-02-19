@@ -1,6 +1,7 @@
 # Simple Docker container memory monitor
 Runs in a container next to the application to be monitored. Monitors memory utilization and sends email alerts when memory usage exceeds the limit.
-**
+
+**WARNING**: This configuration maps `/var/run/docker.sock` to the monitor container which gives the full access to the Docker daemon.
 
 ## Configuration
 Copy the `.env.example` to `.env.${ENV}` and provide your configuration.
