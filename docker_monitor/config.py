@@ -7,7 +7,7 @@ load_dotenv()
 CONTAINER_NAME = os.getenv("CONTAINER_NAME") or sys.exit("Missing CONTAINER_NAME env var")
 INTERVAL = int(os.getenv("INTERVAL") or sys.exit("Missing INTERVAL env var"))
 MEM_UTIL_THRESHOLD = float(os.getenv("MEM_UTIL_THRESHOLD") or sys.exit("Missing MEM_UTIL_THRESHOLD env var"))
-print(MEM_UTIL_THRESHOLD)
+
 ALERT_SENDER = os.getenv("ALERT_SENDER") or sys.exit("Missing ALERT_SENDER env var")
 ALERT_RECIPIENT = os.getenv("ALERT_RECIPIENT") or sys.exit("Missing ALERT_RECIPIENT env var")
 ALERT_SUBJECT = os.getenv("ALERT_SUBJECT") or sys.exit("Missing ALERT_SUBJECT env var")
