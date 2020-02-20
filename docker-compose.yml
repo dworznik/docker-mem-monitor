@@ -1,7 +1,7 @@
-version: '2'
+version: '3'
 services:
   docker_monitor:
-    env_file: ".env.${ENV}"
+    env_file: ".env.${ENV:?err}"
     build:
       context: .
       dockerfile: Dockerfile
